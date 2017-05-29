@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'underscore';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import fetchPosts from "../actions/fetchPosts";
 import {bindActionCreators} from 'redux';
 
@@ -13,7 +14,7 @@ class Posts extends React.Component {
             return <span>none</span>;
         }
         return _.map(this.props.posts, function(post){
-            return <li key={post.id}>{post.title}</li>;
+            return <li key={post._id}>{post.title}</li>;
         });
     }
     render() {
@@ -23,6 +24,7 @@ class Posts extends React.Component {
         }
         return <div>
             Posts!
+            <Link to="/new">Add new</Link>
             <ul>
                 {this.renderPosts()}
             </ul>

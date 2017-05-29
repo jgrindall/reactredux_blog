@@ -41,6 +41,7 @@
     "react-router-dom": "^4.0.0",
     "react-sparklines": "^1.6.0",
     "redux": "^3.0.4",
-    "underscore": "latest"
+    "underscore": "latest",
+    "bluebird":"latest"
   }
 }

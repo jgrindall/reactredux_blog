@@ -26,6 +26,16 @@ mongoose.connect(MONGO_URI, function(err, res){
 	}
 });
 
+app.options('*', function(req, res){
+	console.log(req.method);
+	if (req.method === "OPTIONS") {
+    	res.header('Access-Control-Allow-Origin', req.headers.origin);
+		res.header("Access-Control-Allow-Headers", "Content-type,Accept,X-Custom-Header");
+		res.header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+		res.sendStatus(200);
+  	}
+});
+
 app.get('/posts', function(req, res){
 	res.header("Access-Control-Allow-Origin", "*");
 	Post.find({}, function(err, data){
@@ -35,6 +45,7 @@ app.get('/posts', function(req, res){
 
 app.delete('/delete/:id', function(req, res){
 	res.header("Access-Control-Allow-Origin", "*");
+	res.header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 	var id = req.params["id"];
 	if(id){
 		Post.findById(id, function (err, post){
@@ -97,19 +108,29 @@ app.get('/post/:id', function(req, res){
 });
 
 app.post('/post', function(req, res){
-	res.header("Access-Control-Allow-Origin", "*");
-	var r = Math.floor(Math.random()*100000);
-	var post = new Post({
+	var rnd, title, post;
+	if (req.method === "OPTIONS") {
+    	res.header('Access-Control-Allow-Origin', req.headers.origin);
+		res.sendStatus(200);
+  	}
+	else {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+  	}
+	rnd = Math.floor(Math.random()*100000),
+	title = req.params.title ? (req.params.title + " " + rnd) : ("My blog " + rnd),
+	post = new Post({
 		"authorid"	    :	1,
 		"categories"	:	"fun,games,cookery",
-		"title"		    :	"My blog " + r,
-		"body"		    :  	"Stuff I think " + r
-	})
-	.save(function (err, product, numAffected){
+		"title"		    :	title,
+		"body"		    :  	"Stuff I think " + rnd
+	});
+	post.save(function (err, response, numAffected){
 		if(err){
-
+			console.log("error", err);
 		}
 		else if(post){
+			console.log("done", post);
 			res.send(post);
 		}
 	});

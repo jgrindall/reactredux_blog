@@ -1,0 +1,20 @@
+body{
+    font-family: verdana, arial, sans-serif;
+}
+input{
+    margin:5px;
+    padding:10px;
+    font-size: larger;
+    border-radius: 8px;
+    display: inline-block;
+    border:2px solid gray;
+}
+button{
+    margin: 7px;
+    font-size:larger;
+}
+
+td.map div{
+    width:200px;
+    height:100px;
+}

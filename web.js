@@ -109,16 +109,11 @@ app.get('/post/:id', function(req, res){
 
 app.post('/post', function(req, res){
 	var rnd, title, post;
-	if (req.method === "OPTIONS") {
-    	res.header('Access-Control-Allow-Origin', req.headers.origin);
-		res.sendStatus(200);
-  	}
-	else {
-		res.header("Access-Control-Allow-Origin", "*");
-		res.header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-  	}
+	console.log("req", req.params);
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 	rnd = Math.floor(Math.random()*100000),
-	title = req.params.title ? (req.params.title + " " + rnd) : ("My blog " + rnd),
+	title = req.param('title') ? (req.param('title') + " " + rnd) : ("My blog " + rnd),
 	post = new Post({
 		"authorid"	    :	1,
 		"categories"	:	"fun,games,cookery",

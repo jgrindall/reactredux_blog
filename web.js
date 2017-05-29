@@ -26,13 +26,15 @@ mongoose.connect(MONGO_URI, function(err, res){
 	}
 });
 
-app.get('/list', function(req, res){
+app.get('/posts', function(req, res){
+	res.header("Access-Control-Allow-Origin", "*");
 	Post.find({}, function(err, data){
 		res.send(data);
 	});
 });
 
 app.delete('/delete/:id', function(req, res){
+	res.header("Access-Control-Allow-Origin", "*");
 	var id = req.params["id"];
 	if(id){
 		Post.findById(id, function (err, post){
@@ -46,7 +48,7 @@ app.delete('/delete/:id', function(req, res){
 		        		res.sendStatus(400);
 		      		}
 		      		else {
-		        		res.sendStatus(200);
+		        		res.send(post);
 		      		}
 		    	});
 			}
@@ -54,7 +56,9 @@ app.delete('/delete/:id', function(req, res){
 	}
 });
 
-app.post('/update/:id', function(req, res){
+
+
+/*app.post('/update/:id', function(req, res){
 	var id = req.params["id"];
 	if(id){
 		Post.findById(id, function (err, post){
@@ -74,21 +78,45 @@ app.post('/update/:id', function(req, res){
 			}
 		});
 	}
+});*/
+
+
+app.get('/post/:id', function(req, res){
+	res.header("Access-Control-Allow-Origin", "*");
+	var id = req.params["id"];
+	if(id){
+		Post.findById(id, function (err, post){
+			if(err){
+
+			}
+			else if(post){
+				res.send(post);
+			}
+		});
+	}
 });
 
 app.post('/post', function(req, res){
+	res.header("Access-Control-Allow-Origin", "*");
 	var r = Math.floor(Math.random()*100000);
-	new Post({
+	var post = new Post({
 		"authorid"	    :	1,
+		"categories"	:	"fun,games,cookery",
 		"title"		    :	"My blog " + r,
 		"body"		    :  	"Stuff I think " + r
 	})
 	.save(function (err, product, numAffected){
-		res.sendStatus(200);
+		if(err){
+
+		}
+		else if(post){
+			res.send(post);
+		}
 	});
 });
 
 app.get('/', function(req, res){
+	res.header("Access-Control-Allow-Origin", "*");
 	res.render("index.html");
 });
 
